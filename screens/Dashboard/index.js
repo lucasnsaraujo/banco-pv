@@ -45,7 +45,7 @@ export default function Dashboard({navigation}) {
       <IgnoreStatusBar />
       <Header>
         <ProfilePhoto
-          source={{ uri: 'https://www.github.com/lucasnsaraujo.png' }}
+          source={{ uri: 'https://static.generated.photos/vue-static/face-generator/landing/wall/14.jpg' }}
         />
         <UserInfo>
           <Username>Lucas</Username>

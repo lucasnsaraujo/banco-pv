@@ -14,6 +14,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { useLanguage } from '../../context/Language'
 
+import { api } from '../../services/api'
+
+
+
 export default function CreateAccount({navigation}) {
 
   const { languages, lang } = useLanguage()
@@ -21,7 +25,6 @@ export default function CreateAccount({navigation}) {
   const { control, handleSubmit, formState: { errors }} = useForm({})
 
   const onSubmit = (data) => {
-    console.log(data)
   }
 
 
