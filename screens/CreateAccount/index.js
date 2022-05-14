@@ -16,6 +16,10 @@ import { useLanguage } from '../../context/Language'
 
 import { api } from '../../services/api'
 
+import { v4 as uuidv4} from 'uuid'
+
+import Toast from 'react-native-toast-message'
+
 
 
 export default function CreateAccount({navigation}) {
@@ -25,6 +29,25 @@ export default function CreateAccount({navigation}) {
   const { control, handleSubmit, formState: { errors }} = useForm({})
 
   const onSubmit = (data) => {
+    api.post('/users', {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      id: Math.random * 100000,
+      email: data.email,
+      cpf: data.cpf,
+      birthdate: data.birthdate,
+      password: data.password,
+      createdAt: Date.now().toString(),
+      active: true
+    }).then(response => {
+      console.log(response.data)
+      navigation.navigate('Login')
+      Toast.show({
+        type: 'success',
+        text1: 'Usuário criado com sucesso!',
+        text2: 'Agora insira seus dados e logue em sua conta.'
+      })
+    })
   }
 
 
@@ -46,6 +69,7 @@ export default function CreateAccount({navigation}) {
               onChangeText={onChange}
               value={value}
               style={{marginLeft: 0}}
+              autoCapitalize="none"
               />
             </FormInputContainer>
           </>
@@ -147,6 +171,7 @@ export default function CreateAccount({navigation}) {
               value={value}
               style={{marginLeft: 0}}
               secureTextEntry
+              autoCapitalize="none"
               />
             </FormInputContainer>
           </>

@@ -16,6 +16,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Toast from 'react-native-toast-message';
 
 import { useLanguage, LanguageContext } from '../../context/Language'
+import { api } from '../../services/api';
+import { useUser } from '../../context/User';
 
 
 
@@ -23,23 +25,51 @@ export default function LoginScreen({navigation}) {
 
   const {languages, lang} = useLanguage();
 
+  const { setTransactions, setCurrentUser } = useUser();
+
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      cpf: '12345678901',
-      password: 'password'
+      cpf: '',
+      password: ''
     }
   });
   const onSubmit = data => {
-    console.log(data);
-    navigation.navigate('Dashboard')
+    api.get('/users')
+    .then(response => {
+      const users = response.data;
+      const user = users.filter(user => user.cpf === data.cpf && user.password === data.password)
+      if (user.length > 0) {
+        getTransactions();
+        navigation.navigate('Dashboard')
+        setCurrentUser({firstName: data.firstName, lastName: data.lastName})
+        
+
+        
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Usuário ou senha incorretos.',
+          text2: 'Verifique seus dados e tente novamente'
+        })
+      }
+    })
   };
+
+  const getTransactions = (cpf) => {
+    api.get('/transactions')
+    .then(response => {
+      const transactions = response.data.filter(
+        item => item.sender == cpf || item.receiver == cpf
+        )
+      setTransactions(transactions);
+    })
+  } 
 
 
   return (
     <BackgroundGradient>
       <IgnoreStatusBar/>
-      {(errors.cpf || errors.password) && Toast.show({type: 'error', text1: 'CPF ou senha inválidos.', text2: ' Por favor, , tente novamente.'})}
       <HeaderContainer>
         <SettingsButton onPress={() => navigation.navigate('Settings')}>
           <Settings width={30} height={30} color="#fff"/>
