@@ -6,8 +6,6 @@ import { IgnoreStatusBar } from '../../components/IgnoreStatusBar'
 
 import { Text, Platform } from 'react-native'
 
-import NumberFormat from 'react-number-format';
-
 import BackgroundGradientWithoutHideKeyboard from '../../components/BackgroundGradientWithoutHideKeyboard'
 
 import { api } from '../../services/api'
@@ -35,19 +33,14 @@ import {
   Settings,
   ChevronLeft
 } from 'react-native-feather';
+import { useTransaction } from '../../context/Transaction';
 
 
 export default function TransactionHistory({navigation}) {
 
-const [transactions, setTransactions] = useState([])
+const { transactions } = useTransaction();
 
 const { languages, lang } = useLanguage();
-
-
-
-useEffect(() => {
-  api.get().then(response => setTransactions(response.data))
-}, [])
 
   return (
     <BackgroundGradientWithoutHideKeyboard>
@@ -67,26 +60,18 @@ useEffect(() => {
          renderItem={({item}) => (
             <FlatListItem>
             <FlatListItemLeftContainer>
-                <FlatListItemName>{item.name}</FlatListItemName>
+                <FlatListItemName>{(item.type === 'withdraw') ? item.receiver : item.sender}</FlatListItemName>
                 <FlatListItemDate>{new Date(parseInt(item.date)).toLocaleDateString('pt-BR')}</FlatListItemDate>
             </FlatListItemLeftContainer>
             <FlatListItemRightContainer>
                 <FlatListItemPrice type={item.type}>
                   {(item.type === 'deposit') ? '+' : '- '}
-                  <NumberFormat
-                    value={item.price}
-                    displayType={'text'}
-                    renderText={(value) => <Text>{value}</Text>}
-                    thousandSeparator={'.'}
-                    prefix="R$"
-                    decimalScale={2}
-                    decimalSeparator={','}
-                  />
+                  {item.value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                 </FlatListItemPrice>
             </FlatListItemRightContainer>
             </FlatListItem>
          )}
-         keyExtractor={item => item.id}
+         keyExtractor={item => item._id}
         />
       </FlatListContainer>
 

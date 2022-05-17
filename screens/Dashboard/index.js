@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 
 import { Button } from 'react-native'
 import BackgroundGradient from '../../components/BackgroundGradient'
@@ -35,10 +36,13 @@ import {
 } from 'react-native-feather';
 
 import { useLanguage } from '../../context/Language'
+import { api } from '../../services/api';
+import { useUser } from '../../context/User';
 
 export default function Dashboard({navigation}) {
 
   const { languages, lang } = useLanguage();
+  const { currentUser } = useUser()
 
   return (
     <BackgroundGradient>
@@ -48,8 +52,8 @@ export default function Dashboard({navigation}) {
           source={{ uri: 'https://static.generated.photos/vue-static/face-generator/landing/wall/14.jpg' }}
         />
         <UserInfo>
-          <Username>Lucas</Username>
-          <AccountNumber>{languages[lang].account} 0001</AccountNumber>
+          <Username>{currentUser.firstName}</Username>
+          <AccountNumber>{languages[lang].account} {parseInt(Math.random()*10000)}</AccountNumber>
         </UserInfo>
         <HelpButton onPress={() => navigation.navigate('Help')}>
           <HelpCircle width={30} height={30} color="#fff" />
@@ -61,7 +65,7 @@ export default function Dashboard({navigation}) {
       <BalanceStatus>
         <BalanceContainer>
           <CurrentBalanceText>{languages[lang].balance}</CurrentBalanceText>
-          <Balance>R$ 104.207,01</Balance>
+          <Balance>{currentUser.balance.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Balance>
         </BalanceContainer>
       </BalanceStatus>
       <DashboardButtonsContainer>

@@ -48,4 +48,13 @@ export const AccountNumber = styled.Text`
   font-family: 'Poppins_400Regular';
   `
 
-
+export const LogoutButton = styled.TouchableOpacity`
+  width: 30%;
+  height: 7%;
+  background-color: red;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 10%
+`

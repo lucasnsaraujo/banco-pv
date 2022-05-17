@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { useContext } from 'react';
-import { Text } from 'react-native'
+import { useContext, useState } from 'react';
+import { Text, ActivityIndicator } from 'react-native'
 
 import BackgroundGradient from '../../components/BackgroundGradient'
 import { IgnoreStatusBar } from '../../components/IgnoreStatusBar'
@@ -18,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import { useLanguage, LanguageContext } from '../../context/Language'
 import { api } from '../../services/api';
 import { useUser } from '../../context/User';
+import { useTransaction } from '../../context/Transaction';
 
 
 
@@ -25,8 +26,11 @@ export default function LoginScreen({navigation}) {
 
   const {languages, lang} = useLanguage();
 
-  const { setTransactions, setCurrentUser } = useUser();
+  const { setCurrentUser, currentUser } = useUser();
 
+  const { getTransactions, transactions, setTransactions } = useTransaction();
+
+  const [loading, setLoading] = useState(false);
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -35,36 +39,61 @@ export default function LoginScreen({navigation}) {
     }
   });
   const onSubmit = data => {
+    setLoading(true);
     api.get('/users')
     .then(response => {
       const users = response.data;
-      const user = users.filter(user => user.cpf === data.cpf && user.password === data.password)
+      const user = users.filter(user => user.cpf == data.cpf && user.password == data.password)
       if (user.length > 0) {
-        getTransactions();
-        navigation.navigate('Dashboard')
-        setCurrentUser({firstName: data.firstName, lastName: data.lastName})
-        
-
-        
+        console.log(user[0].firstName, user[0].lastName)
+        const userInfo = {
+          firstName: user[0].firstName,
+          lastName: user[0].lastName,
+          cpf: user[0].cpf
+        }
+        return userInfo;
       } else {
         Toast.show({
           type: 'error',
           text1: 'Usuário ou senha incorretos.',
           text2: 'Verifique seus dados e tente novamente'
         })
+        setLoading(false);
+        return null;
       }
     })
-  };
-
-  const getTransactions = (cpf) => {
-    api.get('/transactions')
-    .then(response => {
-      const transactions = response.data.filter(
-        item => item.sender == cpf || item.receiver == cpf
-        )
-      setTransactions(transactions);
+    .then((user) => {
+      console.log('ASMDKASLD' + user)
+      if (user) { 
+        api.get('/transactions')
+              .then(response => {
+                const transactionsFiltered = response.data.filter(transaction => transaction.sender == user.cpf || transaction.receiver == user.cpf)
+                const transactionsFormatted = transactionsFiltered.map(transaction => {
+                  if (transaction.sender == data.cpf) {
+                    return {...transaction, type: 'withdraw' }
+                  }
+                  else {
+                    return {...transaction, type: 'deposit'}
+                  }
+                })
+                setTransactions(transactionsFormatted);
+                const balance = transactionsFormatted.reduce((acc, data) => {
+                  if (data.type == 'withdraw')
+                  return parseFloat(acc - parseFloat(data['value']))
+                  else
+                  return parseFloat(acc + parseFloat(data['value']))
+                }, 0)
+                console.log('USER == '+ user)
+                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, balance})
+                navigation.navigate('Dashboard')
+                setLoading(false)
+              }).catch(error => {
+                console.log(error)
+                setLoading(false)
+              })
+          }
     })
-  } 
+  };
 
 
   return (
@@ -113,7 +142,7 @@ export default function LoginScreen({navigation}) {
         name="password"
       />
       <EnterButton onPress={handleSubmit(onSubmit)}>
-        <EnterButtonText>{languages[lang].login}</EnterButtonText>
+        {loading ? <ActivityIndicator color="white"/> :<EnterButtonText>{languages[lang].login}</EnterButtonText>}
       </EnterButton>
       <Text style={{color: 'white', paddingTop: 20, paddingBottom: 20, fontSize: 24}}>ou</Text>
       <CreateAccountButton onPress={() => navigation.navigate('Register')}>
