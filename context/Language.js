@@ -40,6 +40,7 @@ export function LanguageProvider({children}) {
         animals: 'Animals',
         education: 'Education',
         kids: 'Kids',
+        donation: 'Donation'
     },
       'portuguese': {
   
@@ -76,7 +77,8 @@ export function LanguageProvider({children}) {
         animals: 'Animais',
         education: 'Educação',
         kids: 'Crianças',
-        myProfile: 'Meu perfil'
+        myProfile: 'Meu perfil',
+        donation: 'Doação'
       },
       'spanish': {
         login: 'Acceso',
@@ -112,6 +114,7 @@ export function LanguageProvider({children}) {
         animals: 'Animales',
         education: 'Educación',
         kids: 'Niños',
+        donation: 'Doación'
       }
   }
 

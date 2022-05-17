@@ -49,7 +49,8 @@ export default function LoginScreen({navigation}) {
         const userInfo = {
           firstName: user[0].firstName,
           lastName: user[0].lastName,
-          cpf: user[0].cpf
+          cpf: user[0].cpf,
+          accountNumber: user[0].accountNumber || '0000'
         }
         return userInfo;
       } else {
@@ -84,7 +85,7 @@ export default function LoginScreen({navigation}) {
                   return parseFloat(acc + parseFloat(data['value']))
                 }, 0)
                 console.log('USER == '+ user)
-                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, balance})
+                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, accountNumber: user.accountNumber ,balance})
                 navigation.navigate('Dashboard')
                 setLoading(false)
               }).catch(error => {

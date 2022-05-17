@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import { ActivityIndicator } from 'react-native';
+
 import BackgroundGradient from '../../components/BackgroundGradient/index';
 import { IgnoreStatusBar } from '../../components/IgnoreStatusBar/index';
 import TopNavigationButtons from '../../components/TopNavigationButtons/index';
@@ -22,20 +24,74 @@ import {
 
 import { DollarSign } from 'react-native-feather'
 
+import { api } from '../../services/api'
+
 import CurrencyInput from 'react-native-currency-input';
 
+import { useForm, Controller } from 'react-hook-form'
 
 import { useLanguage } from '../../context/Language'
 
 import CancelButton from '../../components/CancelButton';
+
+import { useUser } from '../../context/User'
+
+import { useTransaction } from '../../context/Transaction';
+
+import Toast from 'react-native-toast-message'
 
 
 export default function SendMoneyScreen({navigation}) {
 
   const { languages, lang } = useLanguage()
 
-  const [value, setValue] = useState(0);
-  const [cpf, setCpf] = useState('04044600522')
+  const { control, handleSubmit, formState: { errors } } = useForm();
+
+  const { currentUser, setCurrentUser } = useUser();
+
+  const { setTransactions } = useTransaction();
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onSubmit = data => {
+    setIsLoading(true);
+    api.post('/transactions', {
+      sender: currentUser.cpf,
+      receiver: data.receiver,
+      value: data.value,
+      date: Date.now()
+    })
+    .then(response => {
+      api.get('transactions')
+      .then(response => {
+                const transactionsFiltered = response.data.filter(transaction => transaction.sender == currentUser.cpf || transaction.receiver == currentUser.cpf)
+                const transactionsFormatted = transactionsFiltered.map(transaction => {
+                  if (transaction.sender == currentUser.cpf) {
+                    return {...transaction, type: 'withdraw' }
+                  }
+                  else {
+                    return {...transaction, type: 'deposit'}
+                  }
+                })
+                setTransactions(transactionsFormatted);
+                const balance = transactionsFormatted.reduce((acc, data) => {
+                  if (data.type == 'withdraw')
+                  return parseFloat(acc - parseFloat(data['value']))
+                  else
+                  return parseFloat(acc + parseFloat(data['value']))
+                }, 0)
+                setCurrentUser({...currentUser, balance})
+                console.log(currentUser)
+                navigation.navigate('Dashboard')
+                Toast.show({
+                  type: 'success',
+                  text1: 'Transação concluída com sucesso!'
+                })
+                setIsLoading(false)
+      })
+    })
+    .catch(error => Toast.show({type: 'error', text1: 'Erro ao completar transação', text2: 'Tente novamente'}))
+  }
 
   return (
     <BackgroundGradient>
@@ -45,27 +101,43 @@ export default function SendMoneyScreen({navigation}) {
       <InputAboveText>{languages[lang].value}: </InputAboveText>
       <ValueTextInputContainer>
         <DollarSign width={30} height={30} color="#C7C1C1" />
-        <CurrencyInput
-          value={value}
-          onChangeValue={setValue}
-          prefix="R$"
-          delimiter="."
-          separator=","
-          precision={2}
-          style={{ color: 'white', fontSize: 24, paddingLeft: 10 }}
-        />
+        <Controller 
+          name="value"
+          control={control}
+          rules={{ required: true}}
+          render={({field: { onChange, onBlur, value }}) => (
+            <CurrencyInput
+            value={value}
+            onChangeValue={onChange}
+            onBlur={onBlur}
+            prefix="R$"
+            delimiter="."
+            separator=","
+            precision={2}
+            style={{ color: 'white', fontSize: 24, paddingLeft: 10 }}
+            />
+
+          )}
+          />
       </ValueTextInputContainer>
       <InputAboveText style={{marginLeft: -165}}>{languages[lang].destination}:</InputAboveText>
       <CpfInputContainer>
         <Icon name="address-card" size={30} color="white"/>
-        <CpfInput keyboardType="numeric" onChangeText={text => setCpf(text)} value={cpf}/>
+        <Controller
+          name="receiver"
+          control={control}
+          rules={{ required: true, minLength: 11, maxLength: 11 }}
+          render={({field: { onChange, onBlur, value }}) => (
+            <CpfInput keyboardType="numeric" onChangeText={onChange} value={value} onBlur={onBlur}/>
+          )}
+        />
       </CpfInputContainer>
       <ButtonsContainer>
          <CancelButton onPress={()=> navigation.goBack()}>
           <CancelButtonText>{languages[lang].cancel}</CancelButtonText>
          </CancelButton>
-         <DonateButton>
-          <DonateButtonText>{languages[lang].transfer}</DonateButtonText>
+         <DonateButton onPress={handleSubmit(onSubmit)}>
+         { isLoading ? <ActivityIndicator color="white"/> : <DonateButtonText>{languages[lang].transfer}</DonateButtonText>}
          </DonateButton>
       </ButtonsContainer>
     </BackgroundGradient>
