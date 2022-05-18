@@ -56,7 +56,7 @@ const { languages, lang } = useLanguage();
       <TransactionHistoryTitle>{languages[lang].transactions}</TransactionHistoryTitle>
       <FlatListContainer>
         <FlatList
-         data={transactions}
+         data={transactions.sort((a, b) => b.date - a.date)}
          renderItem={({item}) => (
             <FlatListItem>
             <FlatListItemLeftContainer>
