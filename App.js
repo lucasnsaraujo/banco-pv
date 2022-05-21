@@ -26,6 +26,7 @@ import {LanguageProvider} from './context/Language';
 
 import { UserProvider } from './context/User';
 import { TransactionProvider } from './context/Transaction';
+import { AvatarProvider } from './context/Avatar'
 
 
 export default function App() {
@@ -38,68 +39,70 @@ export default function App() {
     return <View><Text>Fontes não carregadas</Text></View>;
   }
     return (
-      <TransactionProvider>
-        <UserProvider>
-          <LanguageProvider>
-            <NavigationContainer>
-              <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen 
-                  name="Login" 
-                  component={LoginScreen} 
-                  options={{ headerShown: false }}
-                  />
-                <Stack.Screen 
-                  name="Register" 
-                  component={CreateAccount} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Dashboard" 
-                  component={Dashboard} 
-                  options={{ headerShown: false, gestureEnabled: false }} 
-                  />
-                <Stack.Screen 
-                  name="Deposit" 
-                  component={DepositScreen} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Donation" 
-                  component={DonationScreen} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Help" 
-                  component={HelpScreen} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Settings" 
-                  component={LanguageSelection} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Profile" 
-                  component={ProfileScreen} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Transfer" 
-                  component={SendMoneyScreen} 
-                  options={{ headerShown: false }} 
-                  />
-                <Stack.Screen 
-                  name="Transactions" 
-                  component={TransactionHistory} 
-                  options={{ headerShown: false }} 
-                  />
+      <AvatarProvider>
+        <TransactionProvider>
+          <UserProvider>
+            <LanguageProvider>
+              <NavigationContainer>
+                <Stack.Navigator initialRouteName="Login">
+                  <Stack.Screen 
+                    name="Login" 
+                    component={LoginScreen} 
+                    options={{ headerShown: false }}
+                    />
+                  <Stack.Screen 
+                    name="Register" 
+                    component={CreateAccount} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Dashboard" 
+                    component={Dashboard} 
+                    options={{ headerShown: false, gestureEnabled: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Deposit" 
+                    component={DepositScreen} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Donation" 
+                    component={DonationScreen} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Help" 
+                    component={HelpScreen} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Settings" 
+                    component={LanguageSelection} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Profile" 
+                    component={ProfileScreen} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Transfer" 
+                    component={SendMoneyScreen} 
+                    options={{ headerShown: false }} 
+                    />
+                  <Stack.Screen 
+                    name="Transactions" 
+                    component={TransactionHistory} 
+                    options={{ headerShown: false }} 
+                    />
 
-              </Stack.Navigator>
-            </NavigationContainer>
-            <Toast/>
-          </LanguageProvider>
-        </UserProvider>
-      </TransactionProvider>
+                </Stack.Navigator>
+              </NavigationContainer>
+              <Toast/>
+            </LanguageProvider>
+          </UserProvider>
+        </TransactionProvider>
+      </AvatarProvider>
   )
 }
 

@@ -36,20 +36,21 @@ import {
 } from 'react-native-feather';
 
 import { useLanguage } from '../../context/Language'
-import { api } from '../../services/api';
 import { useUser } from '../../context/User';
+import { useAvatar } from '../../context/Avatar'
 
 export default function Dashboard({navigation}) {
 
   const { languages, lang } = useLanguage();
   const { currentUser } = useUser()
+  const { getAvatarPicture, currentAvatar } = useAvatar()
 
   return (
     <BackgroundGradient>
       <IgnoreStatusBar />
       <Header>
         <ProfilePhoto
-          source={{ uri: 'https://static.generated.photos/vue-static/face-generator/landing/wall/14.jpg' }}
+          source={getAvatarPicture(currentUser.profile)}
         />
         <UserInfo>
           <Username>{currentUser.firstName}</Username>
@@ -65,7 +66,7 @@ export default function Dashboard({navigation}) {
       <BalanceStatus>
         <BalanceContainer>
           <CurrentBalanceText>{languages[lang].balance}</CurrentBalanceText>
-          <Balance>{currentUser.balance.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Balance>
+           <Balance>{currentUser.balance.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Balance>
         </BalanceContainer>
       </BalanceStatus>
       <DashboardButtonsContainer>

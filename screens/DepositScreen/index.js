@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ActivityIndicator } from 'react-native';
 
@@ -43,6 +43,15 @@ export default function DepositScreen({navigation}) {
   const { currentUser, setCurrentUser } = useUser()
   const { setTransactions } = useTransaction();
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const unmount = () => {
+      setIsLoading(false);
+      setSelectedValue('');
+      setValue(0)
+    }
+    return unmount;
+  }, [])
 
   function handleSubmit(){
     setIsLoading(true);

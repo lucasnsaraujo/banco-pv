@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import { useState } from 'react'
+
 import BackgroundGradient from '../../components/BackgroundGradient/index'
 import {IgnoreStatusBar} from '../../components/IgnoreStatusBar/index'
 import TopNavigationButtons from '../../components/TopNavigationButtons'
@@ -8,7 +10,7 @@ import { useForm, Controller } from 'react-hook-form'
 
 import { Title, FormInputContainer, FormInput, FormTitle, SubmitButton, CancelButton, ButtonsContainer } from  './styles'
 
-import { Text, KeyboardAvoidingView } from 'react-native'
+import { Text, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
  
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -19,6 +21,7 @@ import { api } from '../../services/api'
 import { v4 as uuidv4} from 'uuid'
 
 import Toast from 'react-native-toast-message'
+import { useUser } from '../../context/User'
 
 
 
@@ -28,17 +31,23 @@ export default function CreateAccount({navigation}) {
 
   const { control, handleSubmit, formState: { errors }} = useForm({})
 
+  const { generateAccountNumber, lastGeneratedId } = useUser()
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = (data) => {
+    generateAccountNumber();
+    setIsLoading(true)
     api.post('/users', {
       firstName: data.firstName,
       lastName: data.lastName,
-      id: Math.random * 100000,
       email: data.email,
       cpf: data.cpf,
       birthdate: data.birthdate,
       password: data.password,
       createdAt: Date.now().toString(),
-      active: true
+      active: true,
+      accountNumber: lastGeneratedId,
     }).then(response => {
       console.log(response.data)
       navigation.navigate('Login')
@@ -47,6 +56,16 @@ export default function CreateAccount({navigation}) {
         text1: 'Usuário criado com sucesso!',
         text2: 'Agora insira seus dados e logue em sua conta.'
       })
+      setIsLoading(false)
+    })
+    .catch(error => {
+      console.log(error.response)
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu um erro',
+        text2: 'Verifique seus dados e tente novamente.'
+      })
+      setIsLoading(false)
     })
   }
 
@@ -187,11 +206,11 @@ export default function CreateAccount({navigation}) {
             }}>{languages[lang].cancel}</Text>
         </CancelButton>
         <SubmitButton onPress={handleSubmit(onSubmit)}>
-          <Text style={{ 
+          {isLoading ? <ActivityIndicator color="white"/> : <Text style={{ 
             color: 'white', 
             fontSize: 21,  
             fontFamily: 'Poppins_700Bold'
-            }}>{languages[lang].register}</Text>
+            }}>{languages[lang].register}</Text>}
         </SubmitButton>
       </ButtonsContainer>
       

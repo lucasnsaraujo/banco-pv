@@ -42,6 +42,16 @@ const { transactions } = useTransaction();
 
 const { languages, lang } = useLanguage();
 
+
+function formatCpf(value) {
+  if (value.match(/^[0-9]+$/)) {
+    console.log(value)
+    value.trim().split();
+    return `${value[0] + value[1] + value[2]}.${value[3] + value[4] + value[5]}.${value[6] + value[7] + value[8]}-${value[9] + value[10]}`
+  }
+  return value;
+}
+
   return (
     <BackgroundGradientWithoutHideKeyboard>
       <IgnoreStatusBar/>
@@ -58,15 +68,15 @@ const { languages, lang } = useLanguage();
         <FlatList
          data={transactions.sort((a, b) => b.date - a.date)}
          renderItem={({item}) => (
-            <FlatListItem>
+            <FlatListItem type={item.type}>
             <FlatListItemLeftContainer>
-                <FlatListItemName>{(item.type === 'withdraw') ? item.receiver : item.sender}</FlatListItemName>
+                <FlatListItemName>{(item.type === 'withdraw') ? formatCpf(item.receiver) : formatCpf(item.sender)}</FlatListItemName>
                 <FlatListItemDate>{new Date(parseInt(item.date)).toLocaleDateString('pt-BR')}</FlatListItemDate>
             </FlatListItemLeftContainer>
             <FlatListItemRightContainer>
                 <FlatListItemPrice type={item.type}>
                   {(item.type === 'deposit') ? '+' : '- '}
-                  {item.value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                  {(item.value < 200000) ? (item.value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})) : (item.value > 1000000 ? `R$ ${(item.value / 1000000).toFixed(0)}M` : `R$ ${(item.value / 1000).toFixed(0)}K`) }
                 </FlatListItemPrice>
             </FlatListItemRightContainer>
             </FlatListItem>

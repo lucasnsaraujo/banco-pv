@@ -58,3 +58,33 @@ export const LogoutButton = styled.TouchableOpacity`
   position: absolute;
   bottom: 10%
 `
+export const ProfilePictureGrid = styled.View`
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 40%;
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 20px
+  padding: 10px;
+`
+
+export const ProfilePictureTouchableOpacity = styled.TouchableOpacity`
+  width: 33%;
+  height: 37%;
+`
+
+export const ProfileImage = styled.Image`
+  width: 95%;
+  height: 95%;
+  border-radius: 10px;
+`
+export const Title = styled.Text`
+  font-size: 20px;
+  font-family: 'Poppins_700Bold';
+  color: white;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+`

@@ -85,8 +85,9 @@ export default function LoginScreen({navigation}) {
                   return parseFloat(acc + parseFloat(data['value']))
                 }, 0)
                 console.log('USER == '+ user)
-                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, accountNumber: user.accountNumber ,balance})
+                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, accountNumber: user.accountNumber , balance, profile: currentUser.profile})
                 navigation.navigate('Dashboard')
+                console.log(currentUser)
                 setLoading(false)
               }).catch(error => {
                 console.log(error)

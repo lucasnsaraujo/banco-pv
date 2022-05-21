@@ -40,7 +40,8 @@ export function LanguageProvider({children}) {
         animals: 'Animals',
         education: 'Education',
         kids: 'Kids',
-        donation: 'Donation'
+        donation: 'Donation',
+        chooseProfilePhoto: 'Choose your profile picture'
     },
       'portuguese': {
   
@@ -78,7 +79,8 @@ export function LanguageProvider({children}) {
         education: 'Educação',
         kids: 'Crianças',
         myProfile: 'Meu perfil',
-        donation: 'Doação'
+        donation: 'Doação',
+        chooseProfilePhoto: 'Escolha seu avatar'
       },
       'spanish': {
         login: 'Acceso',
@@ -114,7 +116,8 @@ export function LanguageProvider({children}) {
         animals: 'Animales',
         education: 'Educación',
         kids: 'Niños',
-        donation: 'Doación'
+        donation: 'Doación',
+        chooseProfilePhoto: 'Elige tu foto de perfil'
       }
   }
 

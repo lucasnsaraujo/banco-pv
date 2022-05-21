@@ -31,7 +31,7 @@ export const FlatListContainer = styled.View`
 
 export const FlatListItem = styled.View`
   border-radius: 6px;
-  background-color: #E7E5E5;
+  background-color: ${(props) => (props.type === 'deposit') ? 'rgba(233, 255, 233, 1)' : 'rgba(255, 233, 233, 1)'};
   height: 62px;
   width: 100%;
   margin-bottom: 15px;
@@ -41,20 +41,20 @@ export const FlatListItem = styled.View`
 `
 
 export const FlatListItemRightContainer = styled.View`
-  width: 50%;
+  width: 60%;
   height: 100%
   justify-content: center;
   
 `
 
 export const FlatListItemLeftContainer = styled.View`
-  width: 50%;
+  width: 40%;
   height: 100%
   justify-content: center;
 `
 
 export const FlatListItemName = styled.Text`
-  font-size: 15px;
+  font-size: 13px;
   color: #121212;
   font-weight: bold;
   font-family: 'Poppins_700Bold';
@@ -71,7 +71,8 @@ export const FlatListItemDate = styled.Text`
 export const FlatListItemPrice = styled.Text`
   font-family: 'Poppins_400Regular';
   color: black;
-  font-size: 25px;
+  font-size: 21px;
   text-align: right;
+  width: 100%;
   color: ${(props) => (props.type === 'deposit') ? '#40B936' : '#E03131'}
 `
