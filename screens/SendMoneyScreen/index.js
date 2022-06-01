@@ -82,12 +82,12 @@ export default function SendMoneyScreen({navigation}) {
                 }, 0)
                 setCurrentUser({...currentUser, balance})
                 console.log(currentUser)
+                setIsLoading(false)
                 navigation.navigate('Dashboard')
                 Toast.show({
                   type: 'success',
                   text1: 'Transação concluída com sucesso!'
                 })
-                setIsLoading(false)
       })
     })
     .catch(error => Toast.show({type: 'error', text1: 'Erro ao completar transação', text2: 'Tente novamente'}))

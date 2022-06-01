@@ -34,41 +34,46 @@ export default function CreateAccount({navigation}) {
   const { generateAccountNumber, lastGeneratedId } = useUser()
 
   const [isLoading, setIsLoading] = useState(false);
+  const [currentAccountNumber, setCurrentAccountNumber] = useState(0);
 
-  const onSubmit = (data) => {
-    generateAccountNumber();
-    setIsLoading(true)
-    api.post('/users', {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      cpf: data.cpf,
-      birthdate: data.birthdate,
-      password: data.password,
-      createdAt: Date.now().toString(),
-      active: true,
-      accountNumber: lastGeneratedId,
-    }).then(response => {
-      console.log(response.data)
-      navigation.navigate('Login')
-      Toast.show({
-        type: 'success',
-        text1: 'Usuário criado com sucesso!',
-        text2: 'Agora insira seus dados e logue em sua conta.'
+  const onSubmit = async (data) => {
+    await api.get('/users')
+    .then((response) => {
+      const number = parseInt(response.data.length) + 1;
+      console.log(`Number: ${number}`)
+      setIsLoading(true)
+      api.post('/users', {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        cpf: data.cpf,
+        birthdate: data.birthdate,
+        password: data.password,
+        createdAt: Date.now().toString(),
+        active: true,
+        accountNumber: number,
+      }).then(response => {
+        console.log(response.data)
+        setIsLoading(false)
+        navigation.navigate('Login')
+        Toast.show({
+          type: 'success',
+          text1: 'Usuário criado com sucesso!',
+          text2: 'Agora insira seus dados e logue em sua conta.'
+        })
       })
-      setIsLoading(false)
-    })
-    .catch(error => {
-      console.log(error.response)
-      Toast.show({
-        type: 'error',
-        text1: 'Ocorreu um erro',
-        text2: 'Verifique seus dados e tente novamente.'
+      .catch(error => {
+        console.log(error.response)
+        Toast.show({
+          type: 'error',
+          text1: 'Ocorreu um erro',
+          text2: 'Verifique seus dados e tente novamente.'
+        })
+        setIsLoading(false)
       })
-      setIsLoading(false)
     })
-  }
-
+    }
+    
 
   return(
     <BackgroundGradient>

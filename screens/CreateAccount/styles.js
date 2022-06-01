@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { MaskInput } from 'react-native-mask-input'
 
 export const Title = styled.Text`
   font-family: 'Poppins_700Bold';

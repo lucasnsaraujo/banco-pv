@@ -82,12 +82,12 @@ export default function DepositScreen({navigation}) {
                 }, 0)
                 setCurrentUser({...currentUser, balance})
                 console.log(currentUser)
+                setIsLoading(false)
                 navigation.navigate('Dashboard')
                 Toast.show({
                   type: 'success',
                   text1: 'Transação concluída com sucesso!'
                 })
-                setIsLoading(false)
               })
             })
   }

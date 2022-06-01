@@ -5593,6 +5593,11 @@ react-native-mask-cpf-cnpj@*:
   resolved "https://registry.yarnpkg.com/react-native-mask-cpf-cnpj/-/react-native-mask-cpf-cnpj-2.0.3.tgz#20bf0f08353d906f91e3501286e21bff22b89f3c"
   integrity sha512-Lzh5GhgTmL6mzDcbWOjr3TJ5DU68pbUdP41Ns3zU9Zbf4+ix0fgPmjwmielTmk7Advm4CtPCSHMvZjCb7ILCqg==
 
+react-native-mask-input@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-mask-input/-/react-native-mask-input-1.2.0.tgz#08da62742b34697d1e42d086fb4640951caea5a2"
+  integrity sha512-0bLJ9Szlly4tt59RrbLBS5TSJAGVoH22Hpka85HQ3q4qy10AH+UkcDkozXEonSY5oJK6sobnmzKQ4px5+mkCWg==
+
 react-native-masked-text@*:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/react-native-masked-text/-/react-native-masked-text-1.13.0.tgz#533fde8c45ccbaa1d6b0df30bf19b84b4ace3de3"
