@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { MaskInput } from 'react-native-mask-input'
+import MaskInput from 'react-native-mask-input'
 
 export const Title = styled.Text`
   font-family: 'Poppins_700Bold';
@@ -20,6 +20,12 @@ export const FormInputContainer = styled.View`
   margin-bottom: 20px;
 `
 export const FormInput = styled.TextInput`
+  width: 90%;
+  padding-left: 15px;
+  font-size: 24px;
+  color: white;
+`
+export const DateFormInput = styled(MaskInput)`
   width: 90%;
   padding-left: 15px;
   font-size: 24px;

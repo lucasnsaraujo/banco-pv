@@ -8,7 +8,7 @@ import TopNavigationButtons from '../../components/TopNavigationButtons'
 
 import { useForm, Controller } from 'react-hook-form'
 
-import { Title, FormInputContainer, FormInput, FormTitle, SubmitButton, CancelButton, ButtonsContainer } from  './styles'
+import { DateFormInput, Title, FormInputContainer, FormInput, FormTitle, SubmitButton, CancelButton, ButtonsContainer } from  './styles'
 
 import { Text, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
  
@@ -23,6 +23,7 @@ import { v4 as uuidv4} from 'uuid'
 import Toast from 'react-native-toast-message'
 import { useUser } from '../../context/User'
 
+import { Masks } from 'react-native-mask-input'
 
 
 export default function CreateAccount({navigation}) {
@@ -169,11 +170,12 @@ export default function CreateAccount({navigation}) {
             <FormTitle>{languages[lang].birthdate}</FormTitle>
             <FormInputContainer>
               <Icon name="calendar" size={30} color="white"/>
-              <FormInput
+              <DateFormInput
               onBlue={onBlur}
               onChangeText={onChange}
               value={value}
               style={{marginLeft: 0}}
+              mask={Masks.DATE_DDMMYYYY}
               />
             </FormInputContainer>
           </>
