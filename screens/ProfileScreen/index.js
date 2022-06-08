@@ -37,8 +37,8 @@ export default function ProfileScreen({navigation}) {
           <UserProfilePhoto source={getAvatarPicture(currentUser.profile)}/>
           <UsernameContainer>
             <Username>{currentUser.firstName}</Username>
-            <AccountCreationDate>03/10/1992</AccountCreationDate>
-            <AccountNumber>{languages[lang].account} {parseInt(Math.random()*10000)}</AccountNumber>
+            <AccountCreationDate>{currentUser.birthdate}</AccountCreationDate>
+            <AccountNumber>{languages[lang].account} {currentUser.accountNumber}</AccountNumber>
           </UsernameContainer>
         </ProfileInfoContainer>
       </Header>

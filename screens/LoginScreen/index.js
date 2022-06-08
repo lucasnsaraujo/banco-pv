@@ -50,8 +50,11 @@ export default function LoginScreen({navigation}) {
           firstName: user[0].firstName,
           lastName: user[0].lastName,
           cpf: user[0].cpf,
-          accountNumber: user[0].accountNumber || '0000'
+          accountNumber: user[0].accountNumber || '0000',
+          birthdate: user[0].birthdate,
+          email: user[0].email
         }
+        console.log(userInfo)
         return userInfo;
       } else {
         Toast.show({
@@ -60,7 +63,7 @@ export default function LoginScreen({navigation}) {
           text2: 'Verifique seus dados e tente novamente'
         })
         setLoading(false);
-        return null;
+        return;
       }
     })
     .then((user) => {
@@ -85,7 +88,7 @@ export default function LoginScreen({navigation}) {
                   return parseFloat(acc + parseFloat(data['value']))
                 }, 0)
                 console.log('USER == '+ user)
-                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, accountNumber: user.accountNumber , balance, profile: currentUser.profile})
+                setCurrentUser({firstName: user.firstName, lastName: user.lastName, cpf: user.cpf, accountNumber: user.accountNumber , balance, profile: currentUser.profile, birthdate: user.birthdate})
                 setLoading(false)
                 console.log(currentUser)
                 navigation.navigate('Dashboard')

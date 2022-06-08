@@ -54,7 +54,7 @@ export default function Dashboard({navigation}) {
         />
         <UserInfo>
           <Username>{currentUser.firstName}</Username>
-          <AccountNumber>{languages[lang].account} {parseInt(Math.random()*10000)}</AccountNumber>
+          <AccountNumber>{languages[lang].account} {currentUser.accountNumber}</AccountNumber>
         </UserInfo>
         <HelpButton onPress={() => navigation.navigate('Help')}>
           <HelpCircle width={30} height={30} color="#fff" />

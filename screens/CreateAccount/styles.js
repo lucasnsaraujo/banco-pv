@@ -25,7 +25,7 @@ export const FormInput = styled.TextInput`
   font-size: 24px;
   color: white;
 `
-export const DateFormInput = styled(MaskInput)`
+export const MaskedInput = styled(MaskInput)`
   width: 90%;
   padding-left: 15px;
   font-size: 24px;
