@@ -9,8 +9,16 @@ import { Title, Subtitle, FormTitle, FormInputContainer, FormInput, SendButton, 
 
 import Icon from 'react-native-vector-icons/Entypo'
 
+import { ActivityIndicator } from 'react-native'
+
 import { useLanguage } from '../../context/Language'
 
+import { sendEmail } from '../../services/sendEmail'
+
+import { api } from '../../services/api'
+import { useUser } from '../../context/User'
+
+import Toast from 'react-native-toast-message'
 
 export default function HelpScreen({navigation}) {
 
@@ -18,6 +26,9 @@ export default function HelpScreen({navigation}) {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const { languages, lang } = useLanguage()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { currentUser } = useUser();
 
   return(
     <BackgroundGradient>
@@ -25,26 +36,48 @@ export default function HelpScreen({navigation}) {
       <TopNavigationButtons onPressBack={() => navigation.goBack()} onPressSettings={() => navigation.navigate('Settings')} />
       <Title>{languages[lang].help}</Title>
       <Subtitle>{languages[lang].contactUs}</Subtitle>
-      <FormTitle>{languages[lang].name}:</FormTitle>
-      <FormInputContainer>
-        <Icon name="user" size={30} color="white"/>
-        <FormInput/>
-      </FormInputContainer>
       <FormTitle>{languages[lang].subject}:</FormTitle>
       <FormInputContainer>
         <Icon name="text" size={30} color="white"/>
-        <FormInput/>
+        <FormInput onChangeText={setSubject}/>
       </FormInputContainer>
       <FormTitle>{languages[lang].message}:</FormTitle>
       <FormInputContainer style={{height: 250, marginBottom: 0}}>
-        <FormInput style={{height: 250, paddingTop: 15}} multiline/>
+        <FormInput style={{height: 250, paddingTop: 15}} multiline onChangeText={setMessage}/>
       </FormInputContainer>
       <ButtonsContainer>
         <CancelButton onPress={()=> navigation.goBack()}>
           <CancelButtonText>{languages[lang].cancel}</CancelButtonText>
         </CancelButton>
-        <SendButton>
-          <SendButtonText>{languages[lang].cancel}</SendButtonText>
+        <SendButton 
+          onPress={() => {
+            setIsLoading(true)
+            if (message != '' && subject != '') {
+              
+              api.post('/help', {
+                firstName: currentUser.firstName,
+                lastName: currentUser.lastName,
+                email: currentUser.email,
+                subject,
+                message
+              }).then(()=> {
+                Toast.show({type: 'success', text1: 'Email enviado com sucesso.'})
+                setIsLoading(false)
+                navigation.goBack();
+              })
+            } else {
+              Toast.show({
+                type: 'error',
+                text1: 'Campo inválido',
+                text2: 'Verifique os dados inseridos e tente novamente'
+              })
+              setIsLoading(false)
+            }
+          }
+          }>
+          <SendButtonText>
+            {isLoading ? <ActivityIndicator color="grey"/> : languages[lang].send}
+          </SendButtonText>
         </SendButton>
       </ButtonsContainer>
     </BackgroundGradient>

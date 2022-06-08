@@ -104,7 +104,7 @@ export default function SendMoneyScreen({navigation}) {
         <Controller 
           name="value"
           control={control}
-          rules={{ required: true}}
+          rules={{ required: true, min: 1, max: 500000}}
           render={({field: { onChange, onBlur, value }}) => (
             <CurrencyInput
             value={value}

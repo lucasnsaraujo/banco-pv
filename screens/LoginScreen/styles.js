@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import MaskInput from 'react-native-mask-input'
 
 export const SettingsButton = styled.TouchableOpacity``
 
@@ -82,3 +83,9 @@ export const CreateAccountButtonText = styled.Text`
   font-family: 'Poppins_400Regular';
 `
 
+export const MaskedInput = styled(MaskInput)`
+  width: 90%;
+  padding-left: 15px;
+  font-size: 24px;
+  color: white;
+`

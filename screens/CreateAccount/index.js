@@ -144,17 +144,18 @@ export default function CreateAccount({navigation}) {
 
       <Controller
         control={control}
-        rules={ { required: true, minLength: 11, maxLength: 11  } }
+        rules={ { required: true, maxLength: 14  } }
         render={({ field : { onChange, onBlur, value }}) => (
           <>
             <FormTitle>{languages[lang].id}</FormTitle>
             <FormInputContainer>
               <Icon name="address-card" size={30} color="white"/>
-              <FormInput
+              <MaskedInput
               onBlue={onBlur}
               onChangeText={onChange}
               value={value}
               style={{marginLeft: 0}}
+              mask={Masks.BRL_CPF}
               />
             </FormInputContainer>
           </>

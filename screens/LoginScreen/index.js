@@ -5,7 +5,7 @@ import { Text, ActivityIndicator } from 'react-native'
 import BackgroundGradient from '../../components/BackgroundGradient'
 import { IgnoreStatusBar } from '../../components/IgnoreStatusBar'
 
-import { SettingsButton, HeaderContainer, AppLogo, Title, FormInputContainer, FormInput, FormTitle, EnterButton, EnterButtonText, CreateAccountButton, CreateAccountButtonText } from './styles'
+import { MaskedInput, SettingsButton, HeaderContainer, AppLogo, Title, FormInputContainer, FormInput, FormTitle, EnterButton, EnterButtonText, CreateAccountButton, CreateAccountButtonText } from './styles'
 import {  Settings } from 'react-native-feather'
 
 import { useForm, Controller } from 'react-hook-form'
@@ -19,6 +19,8 @@ import { useLanguage, LanguageContext } from '../../context/Language'
 import { api } from '../../services/api';
 import { useUser } from '../../context/User';
 import { useTransaction } from '../../context/Transaction';
+
+import { Masks } from 'react-native-mask-input'
 
 
 
@@ -114,16 +116,17 @@ export default function LoginScreen({navigation}) {
       <FormTitle>{languages[lang].id}:</FormTitle>
       <Controller
         control={control}
-        rules={{ required: true, minLength: 11, maxLength: 11 }}
+        rules={{ required: true, maxLength: 14}}
         render={({field: { onChange, onBlur, value }}) => (
           <FormInputContainer>
             <Icon name="address-card" size={30} color="white"/>
-            <FormInput
-            onBlue={onBlur}
-            onChangeText={onChange}
-            value={value}
-            style={{marginLeft: 0}}
-            />
+            <MaskedInput
+              onBlue={onBlur}
+              onChangeText={onChange}
+              value={value}
+              style={{marginLeft: 0}}
+              mask={Masks.BRL_CPF}
+              />
           </FormInputContainer>
         )}
         name="cpf"
