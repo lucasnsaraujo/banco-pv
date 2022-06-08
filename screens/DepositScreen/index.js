@@ -44,36 +44,29 @@ export default function DepositScreen({navigation}) {
   const { setTransactions } = useTransaction();
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    const unmount = () => {
-      setIsLoading(false);
-      setSelectedValue('');
-      setValue(0)
-    }
-    return unmount;
-  }, [])
-
   function handleSubmit(){
-    setIsLoading(true);
-    api.post('transactions', {
-      sender: selectedValue,
-      receiver: currentUser.cpf,
-      value: value,
-      date: Date.now(),
-    })
-    .then(response => {
-      api.get('transactions')
+    if (value >= 1 && selectedValue != '') {
+      setIsLoading(true);
+
+      api.post('transactions', {
+        sender: selectedValue,
+        receiver: currentUser.cpf,
+        value: value,
+        date: Date.now(),
+      })
       .then(response => {
-                const transactionsFiltered = response.data.filter(transaction => transaction.sender == currentUser.cpf || transaction.receiver == currentUser.cpf)
-                const transactionsFormatted = transactionsFiltered.map(transaction => {
-                  if (transaction.sender == currentUser.cpf) {
-                    return {...transaction, type: 'withdraw' }
-                  }
-                  else {
-                    return {...transaction, type: 'deposit'}
-                  }
-                })
-                setTransactions(transactionsFormatted);
+        api.get('transactions')
+        .then(response => {
+          const transactionsFiltered = response.data.filter(transaction => transaction.sender == currentUser.cpf || transaction.receiver == currentUser.cpf)
+          const transactionsFormatted = transactionsFiltered.map(transaction => {
+            if (transaction.sender == currentUser.cpf) {
+              return {...transaction, type: 'withdraw' }
+            }
+            else {
+              return {...transaction, type: 'deposit'}
+            }
+          })
+          setTransactions(transactionsFormatted);
                 const balance = transactionsFormatted.reduce((acc, data) => {
                   if (data.type == 'withdraw')
                   return parseFloat(acc - parseFloat(data['value']))
@@ -90,8 +83,15 @@ export default function DepositScreen({navigation}) {
                 })
               })
             })
-  }
-
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Não foi possível efetuar a transação',
+              text2: 'Confira os dados inseridos e tente novamente'
+            })
+          }
+        }
+          
   const { languages, lang } = useLanguage();
 
   return (

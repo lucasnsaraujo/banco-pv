@@ -60,44 +60,45 @@ export default function DonationScreen({navigation}) {
   }
 
   function handleSubmit(){
-    setIsLoading(true);
-    api.post('transactions', {
-      sender: currentUser.cpf,
-      receiver: getDonationDestination(selectedValue),
-      value: value,
-      date: Date.now(),
-    })
-    .then(response => {
-      api.get('transactions')
+    if (value >= 1 && selectedValue != '') {
+      setIsLoading(true);
+      api.post('transactions', {
+        sender: currentUser.cpf,
+        receiver: getDonationDestination(selectedValue),
+        value: value,
+        date: Date.now(),
+      })
       .then(response => {
-                const transactionsFiltered = response.data.filter(transaction => transaction.sender == currentUser.cpf || transaction.receiver == currentUser.cpf)
-                const transactionsFormatted = transactionsFiltered.map(transaction => {
-                  if (transaction.sender == currentUser.cpf) {
-                    return {...transaction, type: 'withdraw' }
-                  }
-                  else {
-                    return {...transaction, type: 'deposit'}
-                  }
-                })
-                setTransactions(transactionsFormatted);
-                const balance = transactionsFormatted.reduce((acc, data) => {
-                  if (data.type == 'withdraw')
-                  return parseFloat(acc - parseFloat(data['value']))
-                  else
-                  return parseFloat(acc + parseFloat(data['value']))
-                }, 0)
-                setCurrentUser({...currentUser, balance})
-                console.log(currentUser)
-                setIsLoading(false)
-                navigation.navigate('Dashboard')
-                Toast.show({
-                  type: 'success',
-                  text1: 'Doação concluída com sucesso!',
-                  text2: 'Obrigado pela sua ajuda!'
-                })
-              })
-            })
-            .catch(error => {
+        api.get('transactions')
+        .then(response => {
+          const transactionsFiltered = response.data.filter(transaction => transaction.sender == currentUser.cpf || transaction.receiver == currentUser.cpf)
+          const transactionsFormatted = transactionsFiltered.map(transaction => {
+            if (transaction.sender == currentUser.cpf) {
+              return {...transaction, type: 'withdraw' }
+            }
+            else {
+              return {...transaction, type: 'deposit'}
+            }
+          })
+          setTransactions(transactionsFormatted);
+          const balance = transactionsFormatted.reduce((acc, data) => {
+            if (data.type == 'withdraw')
+            return parseFloat(acc - parseFloat(data['value']))
+            else
+            return parseFloat(acc + parseFloat(data['value']))
+          }, 0)
+          setCurrentUser({...currentUser, balance})
+          console.log(currentUser)
+          setIsLoading(false)
+          navigation.navigate('Dashboard')
+          Toast.show({
+            type: 'success',
+            text1: 'Doação concluída com sucesso!',
+            text2: 'Obrigado pela sua ajuda!'
+          })
+        })
+      })
+      .catch(error => {
               Toast.show({
                 type: 'error', 
                 text1: 'Ocorreu um erro!',
@@ -105,10 +106,17 @@ export default function DonationScreen({navigation}) {
               })
               navigation.navigate('Dashboard')
             })
-  }
-
-  return (
-    <BackgroundGradient>
+          } else {
+            Toast.show({
+              type: 'error',
+              text1: 'Não foi possível efetuar a transação',
+              text2: 'Confira os dados inseridos e tente novamente'
+            })
+          }
+        }
+          
+          return (
+            <BackgroundGradient>
       <IgnoreStatusBar />
       <TopNavigationButtons onPressBack={() => navigation.goBack()} onPressSettings={() => navigation.navigate('Settings')}  />
       <Title>{languages[lang].donation}</Title>
