@@ -79,15 +79,16 @@ export default function DepositScreen({navigation}) {
                 navigation.navigate('Dashboard')
                 Toast.show({
                   type: 'success',
-                  text1: 'Transação concluída com sucesso!'
+                  text1: languages[lang].depositSuccessToast,
+                  text1: languages[lang].depositSuccessToast2,
                 })
               })
             })
           } else {
             Toast.show({
               type: 'error',
-              text1: 'Não foi possível efetuar a transação',
-              text2: 'Confira os dados inseridos e tente novamente'
+              text1: languages[lang].depositFailedToast,
+              text2: languages[lang].depositFailedToast2,
             })
           }
         }

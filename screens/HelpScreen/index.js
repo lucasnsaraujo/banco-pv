@@ -61,15 +61,15 @@ export default function HelpScreen({navigation}) {
                 subject,
                 message
               }).then(()=> {
-                Toast.show({type: 'success', text1: 'Email enviado com sucesso.'})
+                Toast.show({type: 'success', text1: languages[lang].helpSuccessToast})
                 setIsLoading(false)
                 navigation.goBack();
               })
             } else {
               Toast.show({
                 type: 'error',
-                text1: 'Campo inválido',
-                text2: 'Verifique os dados inseridos e tente novamente'
+                text1: languages[lang].helpFailedToast,
+                text2: languages[lang].helpFailedToast2,
               })
               setIsLoading(false)
             }

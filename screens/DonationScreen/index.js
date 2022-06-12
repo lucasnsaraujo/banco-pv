@@ -93,24 +93,25 @@ export default function DonationScreen({navigation}) {
           navigation.navigate('Dashboard')
           Toast.show({
             type: 'success',
-            text1: 'Doação concluída com sucesso!',
-            text2: 'Obrigado pela sua ajuda!'
+            text1: languages[lang].donateSuccessToast,
+            text2: languages[lang].donateSuccessToast2,
           })
         })
       })
       .catch(error => {
               Toast.show({
                 type: 'error', 
-                text1: 'Ocorreu um erro!',
-                text2: 'Tente novamente mais tarde'
+                text1: languages[lang].donateFailedNetworkToast,
+                text2: languages[lang].donateFailedNetworkToast2,
+                 
               })
               navigation.navigate('Dashboard')
             })
           } else {
             Toast.show({
               type: 'error',
-              text1: 'Não foi possível efetuar a transação',
-              text2: 'Confira os dados inseridos e tente novamente'
+              text1: languages[lang].donateFailedToast ,
+              text2: languages[lang].donateFailedToast2
             })
           }
         }

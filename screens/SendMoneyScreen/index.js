@@ -19,7 +19,8 @@ import {
   CancelButtonText,
   DonateButtonText,
   CpfInputContainer,
-  CpfInput
+  CpfInput,
+  MaskedInput
 } from './styles';
 
 import { DollarSign } from 'react-native-feather'
@@ -40,6 +41,7 @@ import { useTransaction } from '../../context/Transaction';
 
 import Toast from 'react-native-toast-message'
 
+import { Masks } from 'react-native-mask-input';
 
 export default function SendMoneyScreen({navigation}) {
 
@@ -86,7 +88,8 @@ export default function SendMoneyScreen({navigation}) {
                 navigation.navigate('Dashboard')
                 Toast.show({
                   type: 'success',
-                  text1: 'Transação concluída com sucesso!'
+                  text1: languages[lang].transferSuccessToast,
+                  text2: languages[lang].transferSuccessToast2,
                 })
       })
     })
@@ -116,7 +119,7 @@ export default function SendMoneyScreen({navigation}) {
             precision={2}
             style={{ color: 'white', fontSize: 24, paddingLeft: 10 }}
             />
-
+            
           )}
           />
       </ValueTextInputContainer>
@@ -126,9 +129,9 @@ export default function SendMoneyScreen({navigation}) {
         <Controller
           name="receiver"
           control={control}
-          rules={{ required: true, minLength: 11, maxLength: 11 }}
+          rules={{ required: true, minLength: 14, maxLength: 14 }}
           render={({field: { onChange, onBlur, value }}) => (
-            <CpfInput keyboardType="numeric" onChangeText={onChange} value={value} onBlur={onBlur}/>
+            <MaskedInput mask={Masks.BRL_CPF} keyboardType="numeric" onChangeText={onChange} value={value} onBlur={onBlur}/>
           )}
         />
       </CpfInputContainer>

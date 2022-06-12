@@ -61,8 +61,8 @@ export default function LoginScreen({navigation}) {
       } else {
         Toast.show({
           type: 'error',
-          text1: 'Usuário ou senha incorretos.',
-          text2: 'Verifique seus dados e tente novamente'
+          text1: languages[lang].loginFailedToast,
+          text2: languages[lang].loginFailedToast2
         })
         setLoading(false);
         return;

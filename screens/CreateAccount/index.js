@@ -59,16 +59,16 @@ export default function CreateAccount({navigation}) {
         navigation.navigate('Login')
         Toast.show({
           type: 'success',
-          text1: 'Usuário criado com sucesso!',
-          text2: 'Agora insira seus dados e logue em sua conta.'
+          text1: languages[lang].registerSuccessToast,
+          text2: languages[lang].registerSuccessToast2,
         })
       })
       .catch(error => {
         console.log(error.response)
         Toast.show({
           type: 'error',
-          text1: 'Ocorreu um erro',
-          text2: 'Verifique seus dados e tente novamente.'
+          text1: languages[lang].registerFailedToast,
+          text2: languages[lang].registerFailedToast2,
         })
         setIsLoading(false)
       })
