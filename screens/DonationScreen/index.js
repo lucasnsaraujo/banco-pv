@@ -60,7 +60,7 @@ export default function DonationScreen({navigation}) {
   }
 
   function handleSubmit(){
-    if (value >= 1 && selectedValue != '') {
+    if (value >= 1 && selectedValue != '' && value <= currentUser.balance) {
       setIsLoading(true);
       api.post('transactions', {
         sender: currentUser.cpf,

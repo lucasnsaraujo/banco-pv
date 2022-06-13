@@ -56,6 +56,8 @@ export default function SendMoneyScreen({navigation}) {
   const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = data => {
+    if (data.receiver != currentUser.cpf) { 
+    if (data.value <= currentUser.balance) { 
     setIsLoading(true);
     api.post('/transactions', {
       sender: currentUser.cpf,
@@ -94,6 +96,22 @@ export default function SendMoneyScreen({navigation}) {
       })
     })
     .catch(error => Toast.show({type: 'error', text1: 'Erro ao completar transação', text2: 'Tente novamente'}))
+  } else {
+    Toast.show({
+      type: 'error',
+      text1: languages[lang].outOfMoneyToast1,
+      text2: languages[lang].outOfMoneyToast2
+    })
+  }
+} 
+ else {
+  Toast.show({
+    type: 'error',
+    text1: languages[lang].cannotSendToYourselfToast1,
+    text2: languages[lang].cannotSendToYourselfToast2
+  })
+  
+}
   }
 
   return (

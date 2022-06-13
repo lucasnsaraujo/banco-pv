@@ -64,6 +64,10 @@ export function LanguageProvider({children}) {
         helpSuccessToast2: 'Thanks for giving us this feedback!',
         helpFailedToast: 'Invalid field',
         helpFailedToast2: 'Please check the entered data and try again',
+        outOfMoneyToast1: 'Insufficient balance',
+        outOfMoneyToast2: 'Unable to perform operation',
+        cannotSendToYourselfToast1: 'Cannot transfer to self',
+        cannotSendToYourselfToast2: 'Try again.'
     },
       'portuguese': {
   
@@ -125,6 +129,10 @@ export function LanguageProvider({children}) {
         helpSuccessToast2: 'Obrigado por nos deixar esse feedback!',
         helpFailedToast: 'Campo inválido',
         helpFailedToast2: 'Verifique os dados inseridos e tente novamente',
+        outOfMoneyToast1: 'Saldo insuficiente',
+        outOfMoneyToast2: 'Não foi possível realizar a operação',
+        cannotSendToYourselfToast1: 'Não é possível transferir para si mesmo',
+        cannotSendToYourselfToast2: 'Tente novamente.'
 
 
       },
@@ -186,6 +194,10 @@ export function LanguageProvider({children}) {
         helpSuccessToast2: '¡Gracias por darnos este comentario!',
         helpFailedToast: 'Campo no válido',
         helpFailedToast2: 'Por favor, compruebe los datos introducidos y vuelva a intentarlo',
+        outOfMoneyToast1: 'Saldo insuficiente',
+        outOfMoneyToast2: 'No se puede realizar la operación',
+        cantSendToYourselfToast1: 'No se puede enviar a sí mismo',
+        cantSendToYourselfToast2: 'Inténtalo de nuevo.'
       }
   }
 
