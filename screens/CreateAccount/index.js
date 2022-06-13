@@ -144,7 +144,7 @@ export default function CreateAccount({navigation}) {
 
       <Controller
         control={control}
-        rules={ { required: true, maxLength: 14  } }
+        rules={ { required: true, maxLength: 14, minLength: 14} }
         render={({ field : { onChange, onBlur, value }}) => (
           <>
             <FormTitle>{languages[lang].id}</FormTitle>
